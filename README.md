@@ -1,3 +1,7 @@
+Technical Article:  
+AI-Assisted TRNG Entropy Analysis Using SP800-90B and Autoencoder Residual Mapping  
+https://medium.com/@ace.lin0121/ai-assisted-trng-entropy-analysis-using-sp800-90b-and-autoencoder-residual-mapping-cdf2ca6e3cb1
+
 TRNG Autoencoder Analysis – Documentation
 ========================================
 
