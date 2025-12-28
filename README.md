@@ -80,8 +80,8 @@ Additional materials may be published in the future, such as:
 
 Versioning
 ----------
+v1.0.0 – Initial public release of technical documentation and reference implementation
 
-v1.0.0 – Initial public release (documentation only)
 
 Contact
 -------
