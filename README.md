@@ -28,6 +28,19 @@ normal bit-level behavior. Reconstruction residuals are then used as an auxiliar
 signal to highlight potential structural anomalies that are difficult to detect
 using statistics alone.
 
+## Contents
+- `autoencoder.py`  
+  Reference PyTorch implementation of a convolutional autoencoder operating on
+  bit-plane representations of TRNG output.
+
+- `testpattern.py`  
+  Synthetic test pattern generator and analysis script used to demonstrate typical
+  entropy failure scenarios (e.g., stuck bits, biased bits, repetition) and their
+  corresponding autoencoder residual behavior.
+
+- `docs / presentation`  
+  Technical slides explaining the conceptual framework and design rationale.
+
 Purpose
 -------
 
