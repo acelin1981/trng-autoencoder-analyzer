@@ -3,7 +3,7 @@ AI-Assisted TRNG Entropy Analysis Using SP800-90B and Autoencoder Residual Mappi
 https://medium.com/@ace.lin0121/ai-assisted-trng-entropy-analysis-using-sp800-90b-and-autoencoder-residual-mapping-cdf2ca6e3cb1
 
 TRNG Autoencoder Analysis – Documentation
-========================================
+-----------------------------------------
 
 This repository provides a public technical presentation (PPTX file)
 describing a conceptual framework for evaluating True Random Number
@@ -17,6 +17,16 @@ implementation demonstrating how autoencoder-based residual analysis can be appl
 to TRNG output data. The implementation is intended to complement NIST SP800-90B
 statistical tests by providing a structural and visualization-oriented inspection
 method.
+
+## Motivation
+Traditional entropy validation methods defined in NIST SP800-90B focus on statistical
+properties of raw output. While effective, they may not directly reveal spatial or
+structural patterns such as stuck bits, bias, or repetition.
+
+This work explores the use of an autoencoder trained on healthy TRNG output to learn
+normal bit-level behavior. Reconstruction residuals are then used as an auxiliary
+signal to highlight potential structural anomalies that are difficult to detect
+using statistics alone.
 
 Purpose
 -------
