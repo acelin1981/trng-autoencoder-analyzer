@@ -10,6 +10,14 @@ describing a conceptual framework for evaluating True Random Number
 Generator (TRNG) entropy quality using NIST SP800-90B principles and
 an Autoencoder-based residual inspection approach.
 
+Repository Scope
+----------------
+In addition to the technical presentation, this repository includes a reference
+implementation demonstrating how autoencoder-based residual analysis can be applied
+to TRNG output data. The implementation is intended to complement NIST SP800-90B
+statistical tests by providing a structural and visualization-oriented inspection
+method.
+
 Purpose
 -------
 
