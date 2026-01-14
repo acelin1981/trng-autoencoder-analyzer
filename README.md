@@ -1,89 +1,78 @@
-Technical Article:  
-AI-Assisted TRNG Entropy Analysis Using SP800-90B and Autoencoder Residual Mapping  
-https://medium.com/@ace.lin0121/ai-assisted-trng-entropy-analysis-using-sp800-90b-and-autoencoder-residual-mapping-cdf2ca6e3cb1
+# TRNG AE Monitor (Synthetic Demo)
 
-TRNG Autoencoder Analysis – Documentation
------------------------------------------
+This is a runnable PyTorch demo of a CNN autoencoder (AE) that monitors TRNG-like bit-plane windows.
 
-This repository provides a public technical presentation (PPTX file)
-describing a conceptual framework for evaluating True Random Number
-Generator (TRNG) entropy quality using NIST SP800-90B principles and
-an Autoencoder-based residual inspection approach.
+- Input: 8×64×64 bit-planes (float {0,1})
+- Train AE on **healthy** samples only
+- Inject several **degraded/error patterns** for evaluation
+- Output per-frame MSE score + per-bit-plane MSE + simple signature tags
 
-Repository Scope
-----------------
-In addition to the technical presentation, this repository includes a reference
-implementation demonstrating how autoencoder-based residual analysis can be applied
-to TRNG output data. The implementation is intended to complement NIST SP800-90B
-statistical tests by providing a structural and visualization-oriented inspection
-method.
+## 1) Setup
 
-## Motivation
-Traditional entropy validation methods defined in NIST SP800-90B focus on statistical
-properties of raw output. While effective, they may not directly reveal spatial or
-structural patterns such as stuck bits, bias, or repetition.
+```bash
+python -m venv .venv
+# Windows:
+.venv\Scripts\activate
+# Linux/macOS:
+source .venv/bin/activate
 
-This work explores the use of an autoencoder trained on healthy TRNG output to learn
-normal bit-level behavior. Reconstruction residuals are then used as an auxiliary
-signal to highlight potential structural anomalies that are difficult to detect
-using statistics alone.
+pip install -r requirements.txt
+```
 
-## Contents
-- `autoencoder.py`  
-  Reference PyTorch implementation of a convolutional autoencoder operating on
-  bit-plane representations of TRNG output.
+## 2) Generate training/validation data (healthy only)
 
-- `testpattern.py`  
-  Synthetic test pattern generator and analysis script used to demonstrate typical
-  entropy failure scenarios (e.g., stuck bits, biased bits, repetition) and their
-  corresponding autoencoder residual behavior.
+```bash
+python gen_data.py --out data/train_healthy.npz --n_healthy 8000 --n_degraded 0 --seed 1
+python gen_data.py --out data/val_healthy.npz   --n_healthy 2000 --n_degraded 0 --seed 2
+```
 
-- `docs / presentation`  
-  Technical slides explaining the conceptual framework and design rationale.
+## 3) Train the autoencoder
 
-Purpose
--------
+```bash
+python train.py --train_npz data/train_healthy.npz --val_npz data/val_healthy.npz --epochs 25 --batch 64 --out_dir checkpoints
+```
 
-The purpose of this repository is to make the methodology explanation
-and related research notes publicly accessible.  
-This allows external verification, timestamped publication, and a
-permanent public record of the work.
+This writes:
+- `checkpoints/best.pt` (model + q99/q99.9 thresholds from validation)
+- `checkpoints/train_history.json`
 
-Repository Contents
--------------------
+## 4) Generate an evaluation dataset with injected error patterns
 
-AE_SP80090B_Safe_v2.pptx  
-A technical slide deck covering:
-- Motivation for applying machine learning techniques to TRNG analysis
-- Summary of SP800-90B entropy-related concepts  
-  (collision tests, symbol frequency, estimator considerations)
-- A conceptual Autoencoder residual analysis idea for identifying
-  potential patterns or anomalies in TRNG output data
-- Discussion of how statistical and AI-based inspection can complement
-  each other in TRNG quality evaluation
+```bash
+python gen_data.py --out data/eval_mix.npz --n_healthy 2000 --n_degraded 2000 --seed 3
+```
 
-README.md  
-This file.
+Degraded patterns included (mix):
+- bias
+- stuck_plane
+- block_stuck
+- stripes
+- burst
 
-Current Status
---------------
+## 5) Evaluate and write a JSON report
 
-This repository currently provides documentation only.
-No scripts, datasets, or executable code are included at this time.
+```bash
+python eval.py --npz data/eval_mix.npz --ckpt checkpoints/best.pt --out_json outputs/eval_report.json
+```
 
-Planned Additions
------------------
+The report contains:
+- thresholds (q99, q99.9)
+- score stats for healthy vs degraded
+- first 200 detailed records (label, inj_type, score, per-plane MSE, warn/fail flags, signature tags)
 
-Additional materials may be published in the future, such as:
-- Extended documentation or notes
-- Supporting figures or examples
+## Notes
 
-Versioning
-----------
-v1.0.0 – Initial public release of technical documentation and reference implementation
+- This is a **synthetic** demo to provide a safe, reproducible framework.
+- It does **not** claim to model hardware root causes.
 
 
-Contact
--------
+## 6) Generate figures (PNG)
 
-For questions or clarifications, please use GitHub Issues.
+```bash
+python plot_results.py --npz data/eval_mix.npz --ckpt checkpoints/best.pt --out_dir outputs/figures
+```
+
+Outputs:
+- `outputs/figures/fig_score_hist.png` (Figure: score histogram)
+- `outputs/figures/fig_plane_mse.png` (Figure: per-plane MSE bar chart)
+- `outputs/figures/fig_residual_XX.png` (Residual-map examples)
