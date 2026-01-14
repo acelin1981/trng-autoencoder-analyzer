@@ -1,3 +1,12 @@
+## 🔗 Related Technical Article
+
+This repository is accompanied by the following public technical article, which explains the motivation, methodology, and interpretation of autoencoder-based residual analysis for TRNG monitoring:
+
+- **AI-Assisted TRNG Entropy Analysis Using SP800-90B and Autoencoder Residual Mapping**  
+  https://medium.com/@ace.lin0121/ai-assisted-trng-entropy-analysis-using-sp800-90b-and-autoencoder-residual-mapping-cdf2ca6e3cb1
+
+The article provides architectural context and visualization insights that complement this runnable, synthetic demo.
+
 # TRNG AE Monitor (Synthetic Demo)
 
 This is a runnable PyTorch demo of a CNN autoencoder (AE) that monitors TRNG-like bit-plane windows.
