@@ -7,7 +7,12 @@ This repository is accompanied by the following public technical article, which 
 
 The article provides architectural context and visualization insights that complement this runnable, synthetic demo.
 
+
 # TRNG AE Monitor (Synthetic Demo)
+
+> **Version 2 – Code-only Release (Jan 2026)**  
+> This release provides a clean, runnable **code-only** reference implementation.  
+> Datasets (`*.npz`) and trained checkpoints (`*.pt`) are intentionally excluded and must be generated locally.
 
 This is a runnable PyTorch demo of a CNN autoencoder (AE) that monitors TRNG-like bit-plane windows.
 
