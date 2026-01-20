@@ -16,7 +16,7 @@ The article provides architectural context and visualization insights that compl
 
 This is a runnable PyTorch demo of a CNN autoencoder (AE) that monitors TRNG-like bit-plane windows.
 
-- Input: 8×64×64 bit-planes (float {0,1})
+- Input: P×64×64 bit-planes (float {0,1})
 - Train AE on **healthy** samples only
 - Inject several **degraded/error patterns** for evaluation
 - Output per-frame MSE score + per-bit-plane MSE + simple signature tags
@@ -78,6 +78,30 @@ The report contains:
 
 - This is a **synthetic** demo to provide a safe, reproducible framework.
 - It does **not** claim to model hardware root causes.
+
+## Scope, Baselines, and Reproducibility Notes
+
+This repository provides a **code-only reference implementation** accompanying the manuscript
+“Continuous Entropy Monitoring of TRNGs via a CNN Autoencoder with Residual-Based Diagnostics”.
+
+**Baselines.**  
+The evaluation focuses on engineering-relevant baselines rather than comparisons with alternative
+machine learning classifiers. Statistical estimators aligned with NIST SP 800-90B are treated as
+the compliance ground truth for entropy quality, while the autoencoder is used strictly as an
+anomaly detector for deployment-time monitoring.
+
+**Generality.**  
+The monitoring framework is agnostic to the specific number of bit-planes \(P\).
+While the canonical framing supports \(P = 8\), the evaluation dataset used in the manuscript
+provides \(P = 6\). All training and evaluation are therefore performed using a 6-plane variant
+to ensure a consistent input space across experiments. The methodology does not rely on
+TRNG-specific physical models and can be applied to other bitstream sources with the same framing.
+
+**Reproducibility.**  
+Example output files under `example/` are provided for illustration purposes only.
+Reported figures and score trends in the manuscript can be reproduced by running the scripts on
+synthetic or publicly shareable bitstreams, as described in the paper.
+No proprietary or confidential device data are included.
 
 
 ## 6) Generate figures (PNG)
